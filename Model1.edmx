@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EsemkaLibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="author" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="publish_date" Type="date" />
+          <Property Name="stock" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="BookGenre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="genre_id" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Borrowing">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="member_id" Type="int" Nullable="false" />
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="borrow_date" Type="datetime" Nullable="false" />
+          <Property Name="return_date" Type="datetime" />
+          <Property Name="fine" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="deleted_at" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__BookGenre__book___2B3F6F97">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="BookGenre" Type="Self.BookGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BookGenre">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookGenre__genre__2C3393D0">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="BookGenre" Type="Self.BookGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BookGenre">
+              <PropertyRef Name="genre_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Borrowing__book___32E0915F">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Borrowing" Type="Self.Borrowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Borrowing">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Borrowing__membe__31EC6D26">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Borrowing" Type="Self.Borrowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Borrowing">
+              <PropertyRef Name="member_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EsemkaLibraryModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookGenre" EntityType="Self.BookGenre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Borrowing" EntityType="Self.Borrowing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BookGenre__book___2B3F6F97" Association="Self.FK__BookGenre__book___2B3F6F97">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookGenre" EntitySet="BookGenre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookGenre__genre__2C3393D0" Association="Self.FK__BookGenre__genre__2C3393D0">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="BookGenre" EntitySet="BookGenre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Borrowing__book___32E0915F" Association="Self.FK__Borrowing__book___32E0915F">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Borrowing" EntitySet="Borrowing" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Borrowing__membe__31EC6D26" Association="Self.FK__Borrowing__membe__31EC6D26">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Borrowing" EntitySet="Borrowing" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EsemkaLibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="author" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="publish_date" Type="DateTime" Precision="0" />
+          <Property Name="stock" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BookGenre" Relationship="Self.FK__BookGenre__book___2B3F6F97" FromRole="Book" ToRole="BookGenre" />
+          <NavigationProperty Name="Borrowing" Relationship="Self.FK__Borrowing__book___32E0915F" FromRole="Book" ToRole="Borrowing" />
+        </EntityType>
+        <EntityType Name="BookGenre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="book_id" Type="Int32" Nullable="false" />
+          <Property Name="genre_id" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__BookGenre__book___2B3F6F97" FromRole="BookGenre" ToRole="Book" />
+          <NavigationProperty Name="Genre" Relationship="Self.FK__BookGenre__genre__2C3393D0" FromRole="BookGenre" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="Borrowing">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="member_id" Type="Int32" Nullable="false" />
+          <Property Name="book_id" Type="Int32" Nullable="false" />
+          <Property Name="borrow_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="return_date" Type="DateTime" Precision="3" />
+          <Property Name="fine" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__Borrowing__book___32E0915F" FromRole="Borrowing" ToRole="Book" />
+          <NavigationProperty Name="Member" Relationship="Self.FK__Borrowing__membe__31EC6D26" FromRole="Borrowing" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BookGenre" Relationship="Self.FK__BookGenre__genre__2C3393D0" FromRole="Genre" ToRole="BookGenre" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Borrowing" Relationship="Self.FK__Borrowing__membe__31EC6D26" FromRole="Member" ToRole="Borrowing" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__BookGenre__book___2B3F6F97">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="BookGenre" Type="Self.BookGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BookGenre">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Borrowing__book___32E0915F">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Borrowing" Type="Self.Borrowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Borrowing">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookGenre__genre__2C3393D0">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="BookGenre" Type="Self.BookGenre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="BookGenre">
+              <PropertyRef Name="genre_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Borrowing__membe__31EC6D26">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Borrowing" Type="Self.Borrowing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Borrowing">
+              <PropertyRef Name="member_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EsemkaLibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Book" EntityType="Self.Book" />
+          <EntitySet Name="BookGenre" EntityType="Self.BookGenre" />
+          <EntitySet Name="Borrowing" EntityType="Self.Borrowing" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" />
+          <EntitySet Name="Member" EntityType="Self.Member" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK__BookGenre__book___2B3F6F97" Association="Self.FK__BookGenre__book___2B3F6F97">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookGenre" EntitySet="BookGenre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Borrowing__book___32E0915F" Association="Self.FK__Borrowing__book___32E0915F">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Borrowing" EntitySet="Borrowing" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookGenre__genre__2C3393D0" Association="Self.FK__BookGenre__genre__2C3393D0">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="BookGenre" EntitySet="BookGenre" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Borrowing__membe__31EC6D26" Association="Self.FK__Borrowing__membe__31EC6D26">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Borrowing" EntitySet="Borrowing" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EsemkaLibraryModelStoreContainer" CdmEntityContainer="EsemkaLibraryEntities">
+          <EntitySetMapping Name="Book">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="publish_date" ColumnName="publish_date" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookGenre">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.BookGenre">
+              <MappingFragment StoreEntitySet="BookGenre">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+                <ScalarProperty Name="genre_id" ColumnName="genre_id" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Borrowing">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.Borrowing">
+              <MappingFragment StoreEntitySet="Borrowing">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="member_id" ColumnName="member_id" />
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+                <ScalarProperty Name="borrow_date" ColumnName="borrow_date" />
+                <ScalarProperty Name="return_date" ColumnName="return_date" />
+                <ScalarProperty Name="fine" ColumnName="fine" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genre">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Member">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EsemkaLibraryModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
